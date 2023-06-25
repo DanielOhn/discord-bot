@@ -6,7 +6,7 @@
   "license": "ISC",
   "description": "",
   "scripts": {
-    "start": "nodemon start"
+    "start": "node main.js"
   },
   "dependencies": {
     "@discordjs/rest": "^1.7.1",
