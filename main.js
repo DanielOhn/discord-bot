@@ -9,15 +9,7 @@ client.commands = new Collection();
 
 // Database stuff
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DATABASE_URL);
-
-try {
-	await sequelize.authenticate();
-	console.log("DB Connection Established");
-} catch (err) {
-	console.error("Unable to connect to database: ", err);
-}
-
+export const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 // Commands - Iterates through the commands folders and creates commands
 const foldersPath = path.join(__dirname, 'commands');
