@@ -6,6 +6,20 @@ require("dotenv").config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildScheduledEvents] });
 client.commands = new Collection();
 
+
+// Database stuff
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(process.env.DATABASE_URL);
+
+try {
+	await sequelize.authenticate();
+	console.log("DB Connection Established");
+} catch (err) {
+	console.error("Unable to connect to database: ", err);
+}
+
+
+// Commands - Iterates through the commands folders and creates commands
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -26,6 +40,8 @@ for (const folder of commandFolders) {
 	}
 }
 
+
+// Events - Iterates through the event folders and creates the events
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
@@ -40,6 +56,8 @@ for (const file of eventFiles) {
 	}
 }
 
+
+// Makes the slash commands work on discord
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 

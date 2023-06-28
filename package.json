@@ -12,7 +12,8 @@
     "@discordjs/rest": "^1.7.1",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
-    "node.fs": "^1.0.2"
+    "node.fs": "^1.0.2",
+    "sequelize": "^6.32.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
