@@ -8,6 +8,10 @@
   "scripts": {
     "start": "node main.js"
   },
+  "engines": {
+    "node": "16.*",
+    "npm": "*"
+  },
   "dependencies": {
     "@discordjs/rest": "^1.7.1",
     "discord.js": "^14.11.0",
