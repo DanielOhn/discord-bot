@@ -9,7 +9,9 @@ client.commands = new Collection();
 
 // Database stuff
 const Sequelize = require('sequelize');
-export const sequelize = new Sequelize(process.env.DATABASE_URL);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+	dialect: 'postgres',	
+});
 
 // Commands - Iterates through the commands folders and creates commands
 const foldersPath = path.join(__dirname, 'commands');
@@ -42,7 +44,7 @@ for (const file of eventFiles) {
 	const event = require(filePath);
 
 	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
+		client.once(event.name, (...args) => event.execute(...args, sequelize));
 	} else {
 		client.on(event.name, (...args) => event.execute(...args));
 	}

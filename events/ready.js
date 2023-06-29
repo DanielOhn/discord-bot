@@ -1,13 +1,12 @@
 const { Events } = require('discord.js');
 import Content from '../models/Content';
 import Watch_Dates from '../models/Watch_Dates';
-import Content_Types from '../models/Content_TypeS';
-import { sequelize } from '../main';
+import Content_Types from '../models/Content_Types';
 
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
-	async execute(client) {
+	async execute(client, sequelize) {
 		try {
 			await sequelize.authenticate();
 			console.log("DB Connection Established");
