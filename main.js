@@ -1,54 +1,98 @@
-const { Client, GatewayIntentBits, Events, Collection } = require('discord.js');
-const fs = require('node.fs');
-const path = require('node:path');
-require("dotenv").config();
+import { Client, GatewayIntentBits, Events, Collection } from 'discord.js';
+import fs from 'node.fs';
+import path from 'node:path';
+import dotenv from "dotenv";
+dotenv.config();
+
+import { fileURLToPath } from 'node:url';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildScheduledEvents] });
 client.commands = new Collection();
 
-
-// Database stuff
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-	dialect: 'postgres',	
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Commands - Iterates through the commands folders and creates commands
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
-for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+// Commands
+import createEvent from "./commands/test/createEvent.js"
+import ping from "./commands/test/ping.js";
 
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
+const commandList = [createEvent, ping]
 
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
-		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-		}
-	}
+for (let i = 0; i < commandList.length; i++) {
+	const command = commandList[i];
+	
+	if (command.data && command.execute)
+		client.commands.set(command.data.name, command);
+	else
+		console.log("Cannot load the command: ", command);
 }
 
+// Events
+import ready from "./events/ready.js";
+import sequelize from './database.js';
 
-// Events - Iterates through the event folders and creates the events
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+const eventList = [ready]
 
-for (const file of eventFiles) {
-	const filePath = path.join(eventsPath, file);
-	const event = require(filePath);
+for (let i = 0; i < eventList.length; i++) {
+	const event = eventList[i];
 
-	if (event.once) {
+	if (event.once)
 		client.once(event.name, (...args) => event.execute(...args, sequelize));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
+	else
+		console.log("Event has failed: ", event)
 }
+
+
+// for (const folder of commandFolders) {
+// 	const commandsPath = path.join(foldersPath, folder);
+// 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+// 	for (const file of commandFiles) {
+// 		const filePath = path.join(commandsPath, file);
+// 		const command = filePath.toString();
+		
+
+// 		// fs.readFile(command, (err, data) => {
+// 		// 	const commandText = data.toString();
+// 		// 	console.log(commandText.data);
+
+// 		// 	if (commandText.includes('data') && commandText.includes('execute'))
+// 		// 		client.commands.set(commandText.name, command);
+// 		// })
+
+// 		// console.log(command);
+
+// 		// // Set a new item in the Collection with the key as the command name and the value as the exported module
+// 		// if (command.includes('data') && command.includes('execute')) {
+// 		// 	client.commands.set(command.data.name, command);
+// 		// } else {
+// 		// 	console.log(command);
+// 		// 	console.log(filePath);
+// 		// 	console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+// 		// }
+// 	}
+
+// }
+
+
+// // Events - Iterates through the event folders and creates the events
+// const eventsPath = path.join(__dirname, 'events');
+// const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+// for (const file of eventFiles) {
+// 	const filePath = path.join(eventsPath, file);
+// 	const event = filePath;
+
+// 	if (event.once) {
+// 		client.once(event.name, (...args) => event.execute(...args, sequelize));
+// 	} else {
+// 		client.on(event.name, (...args) => event.execute(...args));
+// 	}
+// }
 
 
 // Makes the slash commands work on discord

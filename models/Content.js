@@ -1,40 +1,36 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes } from 'sequelize';
 
 const Content = (sequelize) => {
-    return (
-        sequelize.define('Content',
-
-            {
-                id: {
-                    type: DataTypes.INTEGER,
-                    autoIncrement: true,
-                    primaryKey: true,
-                },
-                name: {
-                    type: DataTypes.STRING,
-                    unique: true,
-                    allowNull: false,
-                },
-                content_type: {
-                    references: {
-                        model: Content_Types,
-                        key: "id",
-                        deferrable: Deferrable.INITIALLY_IMMEDIATE
-                    }
-                },
-                watched: {
-                    references: {
-                        model: Watch_Dates,
-                        key: "id",
-                        deferrable: Deferrable.INITIALLY_IMMEDIATE
-                    }
-                },
-                seen: {
-                    type: DataTypes.INTEGER,
-                    defaultValue: 0,
-                    allowNull: false,
-                }
-            }))
+    return (sequelize.define('content', {
+        'id': {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+        },
+        'name': {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false,
+        },
+        "type_id": {
+            type: DataTypes.INTEGER,
+            references: {
+                model: "content_types",
+                key: "id",
+            },
+        },
+        "watched": {
+            type: DataTypes.INTEGER,
+            references: {
+                model: "watch_dates",
+                key: "id",
+            },
+        },
+        'seen': {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+            allowNull: false,
+        }
+    }))
 };
-
-module.exports = Content;
+export default Content;

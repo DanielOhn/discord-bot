@@ -1,9 +1,9 @@
-const { Events } = require('discord.js');
-import Content from '../models/Content';
-import Watch_Dates from '../models/Watch_Dates';
-import Content_Types from '../models/Content_Types';
+import { Events } from 'discord.js';
+import Content from '../models/Content.js';
+import Watch_Dates from '../models/Watch_Dates.js';
+import Content_Types from '../models/Content_Types.js';
 
-module.exports = {
+const ready = {
 	name: Events.ClientReady,
 	once: true,
 	async execute(client, sequelize) {
@@ -11,13 +11,18 @@ module.exports = {
 			await sequelize.authenticate();
 			console.log("DB Connection Established");
 
-			Content_Types.sync();
-			Watch_Dates.sync();
-			Content.sync();
-	
+			await Content_Types(sequelize).sync()
+				.then(() => console.log("Content_Types Table has synced."))
+				.catch((err) => console.log(err));
+			await Watch_Dates(sequelize).sync().then(() => console.log("Watch_Dates Table has synced.")).catch((err) => console.log("Watch: ", err));;
+			await Content(sequelize).sync().then(() => console.log("Content Table has synced.")).catch((err) => console.log("Content: ", err));;
+
 			console.log(`Ready! Logged in as ${client.user.tag}`);
 		} catch (err) {
 			console.error("Unable to connect to database: ", err);
 		}
 	},
 };
+
+
+export default ready

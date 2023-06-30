@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, GuildScheduledEventManager, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } = require('discord.js');
+import { SlashCommandBuilder, GuildScheduledEventManager, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } from 'discord.js';
 
-module.exports = {
+const createEvent = {
     data: new SlashCommandBuilder()
         .setName('create-event')
         .setDescription('Creates a  scheduled event!'),
@@ -35,3 +35,5 @@ module.exports = {
         await interaction.reply("Event Created!");
     }
 };
+
+export default createEvent;

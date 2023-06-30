@@ -1,14 +1,14 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes } from "sequelize";
 
 const Watch_Dates = (sequelize) => {
     return (
-        sequelize.define('Watch_Dates', {
-            id: {
+        sequelize.define('watch_dates', {
+            'id': {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
             },
-            dates: {
+            'dates': {
                 type: DataTypes.DATE,
                 allowNull: false,
                 unique: true
@@ -16,4 +16,4 @@ const Watch_Dates = (sequelize) => {
         }))
 };
 
-module.exports = Watch_Dates;
+export default Watch_Dates;

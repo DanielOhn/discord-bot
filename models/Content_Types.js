@@ -1,17 +1,19 @@
-const { Sequelize, DataTypes } = require("sequelize");
+import { DataTypes } from "sequelize";
+//import sequelize from "../database.js";
 
 const Content_Types = (sequelize) => {
-    return (sequelize.define('Content_Types', {
-        id: {
+    return (sequelize.define('content_types', {
+        'id': {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
-        types: {
+        'types': {
             type: DataTypes.STRING,
-            allowNull: false
-        }
+            allowNull: false,
+        },
     }))
 };
 
-module.exports = Content_Types;
+
+export default Content_Types;
