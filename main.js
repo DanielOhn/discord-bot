@@ -19,8 +19,9 @@ const commandFolders = fs.readdirSync(foldersPath);
 // Commands
 import createEvent from "./commands/test/createEvent.js"
 import ping from "./commands/test/ping.js";
+import addContent from './commands/content/addContent.js';
 
-const commandList = [createEvent, ping]
+const commandList = [createEvent, ping, addContent];
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];

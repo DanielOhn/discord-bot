@@ -2,27 +2,38 @@ import { Routes } from "discord.js";
 import { REST } from "@discordjs/rest";
 import dotenv from "dotenv";
 dotenv.config();
-import fs from "node:fs";
-import path from "node:path";
+
+import createEvent from "./commands/test/createEvent.js";
+import ping from "./commands/test/ping.js";
+import addContent from "./commands/content/addContent.js";
 
 const commands = []
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+const commandList = [createEvent, ping, addContent]
 
+for (let i = 0; i < commandList.length; i++) {
+	const command = commandList[i];
 
-for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-
-		if ('data' in command && 'execute' in command)
-			commands.push(command.data.toJSON());
-		else
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`)
-	}
+	if (command.data && command.execute)
+		commands.push(command.data.toJSON());
+	else
+		console.log("Something went wrong :c ", command);
 }
+
+// for (const folder of commandFolders) {
+// 	const commandsPath = path.join(foldersPath, folder);
+// 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+// 	for (const file of commandFiles) {
+// 		const filePath = path.join(commandsPath, file);
+// 		const command = require(filePath);
+
+// 		if ('data' in command && 'execute' in command)
+// 			commands.push(command.data.toJSON());
+// 		else
+// 			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`)
+// 	}
+// }
+
+console.log(commands);
 
 const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
