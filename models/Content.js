@@ -12,19 +12,10 @@ const Content = (sequelize) => {
             unique: true,
             allowNull: false,
         },
-        "type_id": {
-            type: DataTypes.INTEGER,
-            references: {
-                model: "content_types",
-                key: "id",
-            },
-        },
-        "watched": {
-            type: DataTypes.INTEGER,
-            references: {
-                model: "watch_dates",
-                key: "id",
-            },
+        "media": {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "Movie",
         },
         'seen': {
             type: DataTypes.INTEGER,

@@ -8,7 +8,14 @@ const Watch_Dates = (sequelize) => {
                 autoIncrement: true,
                 primaryKey: true,
             },
-            'dates': {
+            "content_id": {
+                type: DataTypes.INTEGER,
+                references: {
+                    model: "content",
+                    key: "id",
+                },
+            },
+            'date': {
                 type: DataTypes.DATE,
                 allowNull: false,
                 unique: true
