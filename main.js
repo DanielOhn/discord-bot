@@ -22,8 +22,9 @@ import ping from "./commands/test/ping.js";
 import addContent from './commands/content/addContent.js';
 import editContent from './commands/content/editContent.js';
 import deleteContent from './commands/content/deleteContent.js';
+import showContent from './commands/content/showContent.js';
 
-const commandList = [createEvent, ping, addContent, editContent, deleteContent];
+const commandList = [createEvent, ping, addContent, editContent, deleteContent, showContent];
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];

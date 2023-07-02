@@ -26,7 +26,7 @@ const deleteContent = {
 
             return interaction.reply(`#${getId} - ${name} has been deleted..`);
         } catch (err) {
-            console.log("Couldn't add it to the db, shits fucked yo! ", err);
+            console.log("Couldn't delete the content, shits fucked yo! ", err);
         }
     },
 };
