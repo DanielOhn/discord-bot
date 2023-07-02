@@ -7,9 +7,10 @@ import createEvent from "./commands/test/createEvent.js";
 import ping from "./commands/test/ping.js";
 import addContent from "./commands/content/addContent.js";
 import editContent from "./commands/content/editContent.js";
+import deleteContent from "./commands/content/deleteContent.js";
 
 const commands = []
-const commandList = [createEvent, ping, addContent, editContent]
+const commandList = [createEvent, ping, addContent, editContent, deleteContent]
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];

@@ -25,10 +25,10 @@ const editContent = {
         ),
     async execute(interaction) {
         const userInput = interaction.options.data
-        const getId = interaction.options.data[0].value
+        const getId = userInput[0].value
         const oldContent = await Content(sequelize).findByPk(getId)
 
-        if (oldContent === undefined) return interaction.reply("Cannot find that content.");
+        if (oldContent === null) return interaction.reply("Cannot find that content.");
 
         let updateName = oldContent.dataValues.name
         let updateType = oldContent.dataValues.media
@@ -43,7 +43,7 @@ const editContent = {
 
         try {
             if (updateName || updateType) {
-                const content = await Content(sequelize).update({
+                const updateContent = await Content(sequelize).update({
                     name: updateName,
                     media: updateType
                 }, { where: { id: getId } });
