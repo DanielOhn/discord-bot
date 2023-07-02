@@ -21,7 +21,7 @@ import createEvent from "./commands/test/createEvent.js"
 import ping from "./commands/test/ping.js";
 import addContent from './commands/content/addContent.js';
 
-const commandList = [createEvent, ping, addContent];
+const commandList = [createEvent, ping, addContent, editContent];
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];
@@ -35,6 +35,7 @@ for (let i = 0; i < commandList.length; i++) {
 // Events
 import ready from "./events/ready.js";
 import sequelize from './database.js';
+import editContent from './commands/content/editContent.js';
 
 const eventList = [ready]
 

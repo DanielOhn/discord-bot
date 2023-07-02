@@ -6,9 +6,10 @@ dotenv.config();
 import createEvent from "./commands/test/createEvent.js";
 import ping from "./commands/test/ping.js";
 import addContent from "./commands/content/addContent.js";
+import editContent from "./commands/content/editContent.js";
 
 const commands = []
-const commandList = [createEvent, ping, addContent]
+const commandList = [createEvent, ping, addContent, editContent]
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];
