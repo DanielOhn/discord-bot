@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import sequelize from '../../database.js';
 import Content from '../../models/Content.js';
 
@@ -19,6 +19,8 @@ const showContent = {
                 .setDescription("The id of the movie or show")),
     async execute(interaction) {
 
+        const results = new EmbedBuilder()
+
         const userInput = interaction.options.data
 
         let getType = undefined
@@ -34,16 +36,41 @@ const showContent = {
 
         try {
             const idContent = await Content(sequelize).findByPk(getId);
-            if (idContent) return interaction.reply(`${JSON.stringify(idContent.dataValues)}`);
+            
+            if (idContent) {
+                let data = idContent.dataValues
+                results.setTitle(`#${data.id}: ${data.name}`)
+                results.addFields({ name: "Media", value: `${data.media}`, inline: true })
+                results.addFields({ name: `Seen`, value: `${data.seen} time(s)`, inline: true });
+
+                if (data.seen > 0)
+                    results.addFields({ name: "Watch Dates", value: "None"})
+                return interaction.reply({ embeds: [results] })
+            }
 
             let listContent;
 
-            if (getType)
+            if (getType) {
                 listContent = await Content(sequelize).findAll({ where: { media: getType } })
-            else
+                results.setTitle(`Listing All ${getType}`)
+            }
+            else {
                 listContent = await Content(sequelize).findAll()
+                results.setTitle("List All Movies/Shows")
+            }
 
-            return interaction.reply(JSON.stringify(listContent));
+            for (let i in listContent) {
+                let data = listContent[i].dataValues
+                results.addFields({ name: "Title", value: `#${data.id}: ${data.name}`, inline: true })
+                results.addFields({ name: "Media", value: `${data.media}`, inline: true })
+                results.addFields({ name: `Seen`, value: `${data.seen} time(s)`, inline: true });
+
+                if (data.seen > 0) {
+                    results.addFields({ name: "Last Watched", value: `${data.updatedAt}`, inline: true })
+                }
+            }
+
+            return interaction.reply({ embeds: [results] });
         } catch (err) {
             console.log("Couldn't show it to the db, shits fucked yo! ", err);
         }
