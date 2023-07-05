@@ -36,7 +36,7 @@ const showContent = {
 
         try {
             const idContent = await Content(sequelize).findByPk(getId);
-            
+
             if (idContent) {
                 let data = idContent.dataValues
                 results.setTitle(`#${data.id}: ${data.name}`)
@@ -45,6 +45,7 @@ const showContent = {
 
                 if (data.seen > 0)
                     results.addFields({ name: "Watch Dates", value: "None"})
+                    
                 return interaction.reply({ embeds: [results] })
             }
 
