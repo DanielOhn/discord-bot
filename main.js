@@ -24,12 +24,15 @@ import editContent from './commands/content/editContent.js';
 import deleteContent from './commands/content/deleteContent.js';
 import showContent from './commands/content/showContent.js';
 import addDate from './commands/watch_dates/addDate.js';
+import deleteDate from './commands/watch_dates/deleteDate.js';
 
-const commandList = [createEvent, ping, addContent, editContent, deleteContent, showContent, addDate];
+const commandList = [createEvent, ping,
+	addContent, editContent, deleteContent, showContent,
+	addDate, deleteDate];
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];
-	
+
 	if (command.data && command.execute)
 		client.commands.set(command.data.name, command);
 	else
@@ -59,7 +62,7 @@ for (let i = 0; i < eventList.length; i++) {
 // 	for (const file of commandFiles) {
 // 		const filePath = path.join(commandsPath, file);
 // 		const command = filePath.toString();
-		
+
 
 // 		// fs.readFile(command, (err, data) => {
 // 		// 	const commandText = data.toString();

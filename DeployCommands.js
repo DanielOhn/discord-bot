@@ -10,9 +10,12 @@ import editContent from "./commands/content/editContent.js";
 import deleteContent from "./commands/content/deleteContent.js";
 import showContent from "./commands/content/showContent.js";
 import addDate from "./commands/watch_dates/addDate.js";
+import deleteDate from "./commands/watch_dates/deleteDate.js";
 
 const commands = []
-const commandList = [createEvent, ping, addContent, editContent, deleteContent, showContent, addDate]
+const commandList = [createEvent, ping,
+	addContent, editContent, deleteContent, showContent,
+	addDate, deleteDate]
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];
