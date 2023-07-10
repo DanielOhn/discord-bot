@@ -14,9 +14,9 @@ const addDate = {
         )
         .addStringOption(option =>
             option.setName("date")
-                .setDescription("Set the date, defaults to today.")
+                .setDescription("Set the date, defaults to today. Format as MM/DD/YYY")
                 .setRequired(false),
-            ),
+        ),
     async execute(interaction) {
 
         let getId = interaction.options.data[0].value
@@ -30,25 +30,31 @@ const addDate = {
         if (content === undefined) return interaction.reply(`Cannot find any media by ID: ${getId}`)
 
         try {
-            const checkDate = await Watch_Dates(sequelize).findOne({where: { content_id: getId}})
+            // Find all and check by
+            const checkDates = await Watch_Dates(sequelize).findAll({ where: { content_id: getId } })
+            let setDate;
 
-            if (getDate === undefined)
-                getDate = new Date();
+            if (getDate)
+                setDate = new Date(getDate);
+            else
+                setDate = new Date()
 
-            let year = getDate.getFullYear();
-            let month = getDate.getMonth();
-            let day = getDate.getDay();
 
-            const setDate = new Date(day, month, year);
+            setDate.setHours(0, 0, 0, 0)
 
-            if (checkDate && +checkDate.dataValues.date === +setDate) return interaction.reply(`That date has already been set for '${content.dataValues.name}'.`)
+            for (let i in checkDates) {
+                let check = checkDates[i];
+                if (+check.date === +setDate)
+                    return interaction.reply(`That date has already been set for '${content.dataValues.name}'.`)
+            }
 
-            const watch_times = await Watch_Dates(sequelize).create({
+            const addWatchDate = await Watch_Dates(sequelize).create({
                 content_id: getId,
                 date: setDate
             });
 
-            return interaction.reply(`#${content.dataValues.id} - ${content.dataValues.name} has been seen on ${month}/${day}/${year}.`);
+            return interaction.reply(`#${content.dataValues.id} - ${content.dataValues.name} has been seen on ${setDate.getMonth() + 1}/${setDate.getDay() + 2}/${setDate.getFullYear()}.`);
+
         } catch (err) {
             console.log("Couldn't add it to the db, shits fucked yo! ", err);
         }
