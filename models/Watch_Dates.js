@@ -11,14 +11,13 @@ const Watch_Dates = (sequelize) => {
             "content_id": {
                 type: DataTypes.INTEGER,
                 references: {
-                    model: "content",
+                    model: "contents",
                     key: "id",
                 },
             },
             'date': {
                 type: DataTypes.DATE,
                 allowNull: false,
-                unique: true
             }
         }))
 };

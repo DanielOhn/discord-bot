@@ -10,11 +10,11 @@ const ready = {
 			await sequelize.authenticate();
 			console.log("DB Connection Established");
 
-			await Content(sequelize).sync()
+			await Content(sequelize).sync({ force: false })
 				.then(() => console.log("Content Table has synced."))
 				.catch((err) => console.log("Content: ", err));;
 
-			await Watch_Dates(sequelize).sync()
+			await Watch_Dates(sequelize).sync({ force: false })
 				.then(() => console.log("Watch_Dates Table has synced."))
 				.catch((err) => console.log("Watch: ", err));;
 

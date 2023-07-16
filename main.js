@@ -26,10 +26,13 @@ import showContent from './commands/content/showContent.js';
 import addDate from './commands/watch_dates/addDate.js';
 import deleteDate from './commands/watch_dates/deleteDate.js';
 import editDate from './commands/watch_dates/editDate.js';
+import getCronJobs from './commands/cron/getCronJobs.js';
+
 
 const commandList = [createEvent, ping,
 	addContent, editContent, deleteContent, showContent,
-	addDate, deleteDate, editDate];
+	addDate, deleteDate, editDate,
+	getCronJobs];
 
 for (let i = 0; i < commandList.length; i++) {
 	const command = commandList[i];
@@ -42,15 +45,18 @@ for (let i = 0; i < commandList.length; i++) {
 
 // Events
 import ready from "./events/ready.js";
+import addDateEvent from './events/addDateEvent.js';
 import sequelize from './database.js';
 
-const eventList = [ready]
+const eventList = [ready, addDateEvent]
 
 for (let i = 0; i < eventList.length; i++) {
 	const event = eventList[i];
 
 	if (event.once)
 		client.once(event.name, (...args) => event.execute(...args, sequelize));
+	else if (event)
+		client.on(event.name, (...args) => event.execute(...args))
 	else
 		console.log("Event has failed: ", event)
 }

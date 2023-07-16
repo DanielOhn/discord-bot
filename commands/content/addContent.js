@@ -20,16 +20,25 @@ const addContent = {
                 )
             ),
     async execute(interaction) {
-        const getName = interaction.options.data[0].value
-        const getType = interaction.options.data[1].value
+        let userInput = interaction.options.data
+        let getTitle;
+        let getType;
+
+        for (let i in userInput) {
+            if (userInput[i].name === "title")
+                getTitle = userInput[i].value
+
+            if (userInput[i].name === "type")
+                getType = userInput[i].value
+        }
 
         try {
             const content = await Content(sequelize).create({
-                name: getName,
+                name: getTitle,
                 media: getType
             });
 
-            return interaction.reply(`#${content.dataValues.id} - ${getName} has been added.`);
+            return interaction.reply(`#${content.dataValues.id} - ${getTitle} has been added.`);
         } catch (err) {
             console.log("Couldn't add it to the db, shits fucked yo! ", err);
         }

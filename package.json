@@ -5,7 +5,7 @@
   "author": "catsby",
   "license": "ISC",
   "description": "",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "node main.js"
   },
@@ -17,6 +17,7 @@
     "@discordjs/rest": "^1.7.1",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
+    "node-schedule": "^2.1.1",
     "node.fs": "^1.0.2",
     "pg": "^8.11.1",
     "pg-hstore": "^2.3.4",
