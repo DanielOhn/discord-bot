@@ -5,39 +5,71 @@ import Content from '../../models/Content.js';
 const createEvent = {
     data: new SlashCommandBuilder()
         .setName('create-event')
-        .setDescription('Creates a  scheduled event!'),
+        .setDescription('Creates a  scheduled event!')
+        .addStringOption(option => 
+            option.setName("event-name")
+                .setDescription("set the name")
+                .setRequired(true)
+        )
+        .addStringOption(option => 
+            option.setName("date")
+                .setDescription("Set the date for the event, Format: MM/DD/YYYY")
+        )
+        .addStringOption(option => 
+            option.setName("time")
+                .setDescription("Set the time, format: HH:MM")
+        ),
     async execute(interaction) {
 
         const guild = interaction.client.guilds.cache.get(process.env.GUILD_ID);
-
         const getAllMedia = await Content(sequelize).findAll();
 
-        console.log(getAllMedia)
+        let userInput = interaction.option.data
+        let event_name = "Super Cool Event";
+        let date = new Date();
+        let time = `${date.getHours() + 1}:00`;
 
-        const get_content = [
-            getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name,
-            getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name
-        ]
+        for (let i in userInput) {
+            if (userInput[i].name === "event name")
+                event_name = userInput[i].value
 
-        console.log(get_content);
+            if (userInput[i].name === "date")
+                date = new Date(userInput[i].value)
 
-        const event_name = ["Anime Night", "Movie Night", "Street Fighter Sundays"];
+            if (userInput[i].name === "time")
+                time = userInput[i].value
+        }
 
-        var get_event_name = event_name[Math.floor(Math.random() * event_name.length)];
-        var description = `Tonight we'll be watching: \n${get_content[Math.floor(Math.random() * get_content.length)]} \n${get_content[Math.floor(Math.random() * get_content.length)]}`
+        let get_content;
+        let description;
 
+
+        if (event_name === "Anime Night") {
+            get_content = [
+                getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name,
+                getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name
+            ]
+
+            description = `Tonight we'll be watching: \n${get_content[Math.floor(Math.random() * get_content.length)]} \n${get_content[Math.floor(Math.random() * get_content.length)]}`
+        }
+
+
+        // ADD A CUSTOM GUILD; MAKE A DB TABLE TO STORE THE GUILD ID TO THE DB TO DISCORD SERVER
         if (!guild)
             return console.log('Guild not found');
 
         const event_manager = new GuildScheduledEventManager(guild);
 
-        const date = new Date();
-        date.setHours("23")
-        date.setMinutes("45")
+
+        // Sets the custom time for the event 
+        time = time.split(":")
+
+        date.setHours(time[0])
+        date.setMinutes(time[1])
         date.setSeconds("00")
 
         await event_manager.create({
-            name: get_event_name,
+            name: event_name,
             scheduledStartTime: date,
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.Voice,
