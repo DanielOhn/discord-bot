@@ -17,20 +17,25 @@ const createEvent = {
         )
         .addStringOption(option => 
             option.setName("time")
-                .setDescription("Set the time, format: HH:MM")
+                .setDescription("Set the time , format: HH:MM")
+        )
+        .addStringOption(option => 
+            option.setName("description")
+                .setDescription("Describe the event")    
         ),
     async execute(interaction) {
 
         const guild = interaction.client.guilds.cache.get(process.env.GUILD_ID);
         const getAllMedia = await Content(sequelize).findAll();
 
-        let userInput = interaction.option.data
+        let userInput = interaction.options.data
         let event_name = "Super Cool Event";
         let date = new Date();
-        let time = `${date.getHours() + 1}:00`;
+        let time = `${date.getHours()+1}:00`;
+        let description = "";
 
         for (let i in userInput) {
-            if (userInput[i].name === "event name")
+            if (userInput[i].name === "event-name")
                 event_name = userInput[i].value
 
             if (userInput[i].name === "date")
@@ -38,11 +43,12 @@ const createEvent = {
 
             if (userInput[i].name === "time")
                 time = userInput[i].value
+
+            if (userInput[i].name === "description")
+                description = userInput[i].value
         }
 
         let get_content;
-        let description;
-
 
         if (event_name === "Anime Night") {
             get_content = [
@@ -50,6 +56,7 @@ const createEvent = {
                 getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name
             ]
 
+            time = "6:30"
             description = `Tonight we'll be watching: \n${get_content[Math.floor(Math.random() * get_content.length)]} \n${get_content[Math.floor(Math.random() * get_content.length)]}`
         }
 

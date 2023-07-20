@@ -11,9 +11,11 @@ import { cron_jobs } from '../commands/cron/getCronJobs.js';
 const addDateEvent = {
 	name: Events.GuildScheduledEventCreate,
 	async execute(client) {
-
 		try {
 			console.log(client);
+
+			if (client.name !== "Anime Night")
+				return
 			console.log(`Event created:`);
 
 			let getContent = client.description
