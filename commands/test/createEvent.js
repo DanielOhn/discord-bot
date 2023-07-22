@@ -6,32 +6,30 @@ const createEvent = {
     data: new SlashCommandBuilder()
         .setName('create-event')
         .setDescription('Creates a  scheduled event!')
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName("event-name")
                 .setDescription("set the name")
                 .setRequired(true)
         )
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName("date")
                 .setDescription("Set the date for the event, Format: MM/DD/YYYY")
         )
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName("time")
                 .setDescription("Set the time , format: HH:MM")
         )
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName("description")
-                .setDescription("Describe the event")    
+                .setDescription("Describe the event")
         ),
     async execute(interaction) {
-
         const guild = interaction.client.guilds.cache.get(process.env.GUILD_ID);
-        const getAllMedia = await Content(sequelize).findAll();
 
         let userInput = interaction.options.data
         let event_name = "Super Cool Event";
         let date = new Date();
-        let time = `${date.getHours()+1}:00`;
+        let time = `${date.getHours() + 1}:00`;
         let description = "";
 
         for (let i in userInput) {
@@ -51,12 +49,23 @@ const createEvent = {
         let get_content;
 
         if (event_name === "Anime Night") {
+            const getAllMedia = await Content(sequelize).findAll()
+
+            const nextFridayDate = new Date(new Date().getTime())
+
+            nextFridayDate.setDate(
+                new Date(
+                    nextFridayDate.getDate() + ((7 - nextFridayDate.getDay() + 5) % 7 || 7)
+                ))
+
+            date = nextFridayDate;
+
             get_content = [
                 getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name,
                 getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name
             ]
 
-            time = "6:30"
+            time = "18:30"
             description = `Tonight we'll be watching: \n${get_content[Math.floor(Math.random() * get_content.length)]} \n${get_content[Math.floor(Math.random() * get_content.length)]}`
         }
 

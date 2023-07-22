@@ -1,22 +1,17 @@
-import { Events } from 'discord.js';
+import { Events, Routes } from 'discord.js';
 import * as cron from "node-schedule"
 import sequelize from '../database.js';
 import Content from '../models/Content.js';
 import Watch_Dates from '../models/Watch_Dates.js';
 import { Op } from "sequelize"
-import { cron_jobs } from '../commands/cron/getCronJobs.js';
-// import Content from '../models/Content.js';
-// import Watch_Dates from '../models/Watch_Dates.js';
+
 
 const addDateEvent = {
 	name: Events.GuildScheduledEventCreate,
 	async execute(client) {
 		try {
-			console.log(client);
-
 			if (client.name !== "Anime Night")
 				return
-			console.log(`Event created:`);
 
 			let getContent = client.description
 			getContent = getContent.split("\n")
@@ -31,18 +26,19 @@ const addDateEvent = {
 				media.push(getContent[i])
 			}
 
-			console.log(media);
 			const watchDate = new Date(client.scheduledStartTimestamp);
-			const newDate = new Date()
-			newDate.setSeconds(newDate.getSeconds() + 3);
-			
+
+			// Sets the cron job date + time
+			const jobDate = new Date(watchDate.getDate() + 1)
+			jobDate.setHours(1)
+			jobDate.setMinutes(0)
 
 			watchDate.setSeconds(0);
 			watchDate.setMinutes(0);
 			watchDate.setHours(0);
 			watchDate.setMilliseconds(0);
 
-			const job = cron.scheduleJob(newDate, async () => {
+			const job = cron.scheduleJob(jobDate, async () => {
 				let contentIds = [];
 
 				if (media.length === 2) {
@@ -64,9 +60,7 @@ const addDateEvent = {
 					contentIds.push(getContentIds.dataValues.id);
 				}
 
-				console.log("Content Ids: " + contentIds);
-
-				// Create new Watch Dates for each media in the scheduled event
+				//Create new Watch Dates for each media in the scheduled event
 				for (let i in contentIds) {
 					let newWatchdate = await Watch_Dates(sequelize).create({ content_id: contentIds[i], date: watchDate})
 
@@ -74,11 +68,7 @@ const addDateEvent = {
 					console.log(newWatchdate)
 				}
 
-
 			})
-
-			cron_jobs.set(cron_jobs.size+1, job)
-
 		} catch (err) {
 			console.error("Unable to create the scheduled event: ", err);
 		}
