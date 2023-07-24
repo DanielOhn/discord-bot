@@ -56,7 +56,7 @@ const createEvent = {
         let get_content;
 
         if (event_name === "Anime Night") {
-            const getAllMedia = await Content(sequelize).findAll({ where: { media: "Movie" } })
+            const getMovies = await Content(sequelize).findAll({ where: { media: "Movie" } })
             const getShows = await Content(sequelize).findAll({ where: { media: "Show" } })
 
             const nextFridayDate = new Date(new Date().getTime())
@@ -69,12 +69,12 @@ const createEvent = {
             date = nextFridayDate;
 
             get_content = [
-                getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name,
-                getAllMedia[Math.floor(Math.random() * getAllMedia.length)].dataValues.name
+                getMovies[Math.floor(Math.random() * getMovies.length)].dataValues.name,
+                getShows[Math.floor(Math.random() * getShows.length)].dataValues.name
             ]
 
             time = "18:30"
-            description = `Tonight we'll be watching: \n${get_content[Math.floor(Math.random() * get_content.length)]} \n${get_content[Math.floor(Math.random() * get_content.length)]}`
+            description = `Tonight we'll be watching: \n${get_content[0]} \n${get_content[1]}`
         }
 
 
