@@ -28,14 +28,10 @@ const createEvent = {
         const guild = interaction.client.guilds.cache.get(interaction.guildId);
         const getChannelDefault = await Channels(sequelize).findOne({ where: { guild_id: `${interaction.guildId}` } });
 
-        console.log(getChannelDefault)
         if (getChannelDefault === null)
             return interaction.reply("No channel default")
 
         const channel_id = getChannelDefault.dataValues.channel_id
-
-        //`638586352568369156`
-        //${channelId}
 
         let userInput = interaction.options.data;
         let event_name = "Super Cool Event";
@@ -84,7 +80,7 @@ const createEvent = {
 
         // ADD A CUSTOM GUILD; MAKE A DB TABLE TO STORE THE GUILD ID TO THE DB TO DISCORD SERVER
         if (!guild)
-            return console.log('Guild not found');
+            return console.log('discord server not found');
 
         const event_manager = new GuildScheduledEventManager(guild);
 

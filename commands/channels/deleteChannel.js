@@ -11,7 +11,7 @@ const deleteChannel = {
             const checkChannel = await Channels(sequelize).findOne({ guild_id: interaction.guildId })
 
             if (checkChannel) {
-                const deleteChannel = await Channels(sequelize).delete({ where: { guild_id: interaction.guildId }})
+                const deleteChannel = await Channels(sequelize).destroy({ where: { guild_id: interaction.guildId }})
                 return interaction.reply('Deleted channel default.')
             }
 
