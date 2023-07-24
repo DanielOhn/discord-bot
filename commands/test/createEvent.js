@@ -1,5 +1,6 @@
 import { SlashCommandBuilder, GuildScheduledEventManager, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } from 'discord.js';
 import sequelize from '../../database.js';
+import Channels from '../../models/Channels.js';
 import Content from '../../models/Content.js';
 
 const createEvent = {
@@ -24,9 +25,19 @@ const createEvent = {
                 .setDescription("Describe the event")
         ),
     async execute(interaction) {
-        const guild = interaction.client.guilds.cache.get(process.env.GUILD_ID);
+        const guild = interaction.client.guilds.cache.get(interaction.guildId);
+        const getChannelDefault = await Channels(sequelize).findOne({ where: { guild_id: `${interaction.guildId}` } });
 
-        let userInput = interaction.options.data
+        console.log(getChannelDefault)
+        if (getChannelDefault === null)
+            return interaction.reply("No channel default")
+
+        const channel_id = getChannelDefault.dataValues.channel_id
+
+        //`638586352568369156`
+        //${channelId}
+
+        let userInput = interaction.options.data;
         let event_name = "Super Cool Event";
         let date = new Date();
         let time = `${date.getHours() + 1}:00`;
@@ -49,7 +60,8 @@ const createEvent = {
         let get_content;
 
         if (event_name === "Anime Night") {
-            const getAllMedia = await Content(sequelize).findAll()
+            const getAllMedia = await Content(sequelize).findAll({ where: { media: "Movie" } })
+            const getShows = await Content(sequelize).findAll({ where: { media: "Show" } })
 
             const nextFridayDate = new Date(new Date().getTime())
 
@@ -90,7 +102,7 @@ const createEvent = {
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.Voice,
             description: description,
-            channel: '638586352568369156',
+            channel: channel_id,
             image: null,
             reason: 'Testing with creating a Scheduled Event',
         });

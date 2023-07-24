@@ -63,9 +63,6 @@ const addDateEvent = {
 				//Create new Watch Dates for each media in the scheduled event
 				for (let i in contentIds) {
 					let newWatchdate = await Watch_Dates(sequelize).create({ content_id: contentIds[i], date: watchDate})
-
-					// Check if created, if not then update it by incremneting the value by 1 
-					console.log(newWatchdate)
 				}
 
 			})
