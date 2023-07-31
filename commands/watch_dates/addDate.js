@@ -48,7 +48,7 @@ const addDate = {
                 if (+check.date === +setDate)
 
                     if (content.dataValues.seen === 0) {
-                        const updateContent = await Content(sequelize).edit({
+                        const updateContent = await Content(sequelize).update({
                             seen: content.dataValues.seen + 1
                         }, { where: { id: content.dataValues.id } })
 
@@ -62,7 +62,7 @@ const addDate = {
                 date: setDate
             });
 
-            const updateContent = await Content(sequelize).edit({
+            const updateContent = await Content(sequelize).update({
                 seen: content.dataValues.seen + 1
             }, { where: { id: content.dataValues.id } })
 
