@@ -44,14 +44,27 @@ const addDate = {
 
             for (let i in checkDates) {
                 let check = checkDates[i];
+
                 if (+check.date === +setDate)
-                    return interaction.reply(`That date has already been set for '${content.dataValues.name}'.`)
+
+                    if (content.dataValues.seen === 0) {
+                        const updateContent = await Content(sequelize).edit({
+                            seen: content.dataValues.seen + 1
+                        }, { where: { id: content.dataValues.id } })
+
+                        return interaction.reply("Date has been set already, updated the amount of times the content has been seen.")
+                    }
+                return interaction.reply(`That date has already been set for '${content.dataValues.name}'.`)
             }
 
             const addWatchDate = await Watch_Dates(sequelize).create({
                 content_id: getId,
                 date: setDate
             });
+
+            const updateContent = await Content(sequelize).edit({
+                seen: content.dataValues.seen + 1
+            }, { where: { id: content.dataValues.id } })
 
             return interaction.reply(`#${content.dataValues.id} - ${content.dataValues.name} has been seen on ${setDate.getMonth() + 1}/${setDate.getDay() + 2}/${setDate.getFullYear()}.`);
 
