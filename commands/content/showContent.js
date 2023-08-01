@@ -61,7 +61,7 @@ const showContent = {
             }
 
             for (let i in listContent) {
-                if (i > 8) {
+                if (i > 7) {
                     return interaction.reply({ embeds: [results] });
                 }
 
