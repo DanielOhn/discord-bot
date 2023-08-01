@@ -61,8 +61,8 @@ const showContent = {
             }
 
             for (let i in listContent) {
-                if (i > 24) {
-                    break
+                if (i >  10) {
+                    return interaction.reply({ embeds: [results] });
                 }
 
                 let data = listContent[i].dataValues
