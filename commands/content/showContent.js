@@ -53,14 +53,18 @@ const showContent = {
 
             if (getType) {
                 listContent = await Content(sequelize).findAll({ where: { media: getType } })
-                results.setTitle(`Listing All ${getType}`)
+                results.setTitle(`${getType}s`)
             }
             else {
                 listContent = await Content(sequelize).findAll()
-                results.setTitle("List All Movies/Shows")
+                results.setTitle("Movies/Shows")
             }
 
             for (let i in listContent) {
+                if (i > 24) {
+                    break
+                }
+
                 let data = listContent[i].dataValues
                 results.addFields({ name: "Title", value: `#${data.id}: ${data.name}`, inline: true })
                 results.addFields({ name: "Media", value: `${data.media}`, inline: true })
