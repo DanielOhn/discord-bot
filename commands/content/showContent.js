@@ -61,7 +61,7 @@ const showContent = {
             }
 
             for (let i in listContent) {
-                if (i > 5) {
+                if (i > 8) {
                     return interaction.reply({ embeds: [results] });
                 }
 
@@ -70,9 +70,9 @@ const showContent = {
                 results.addFields({ name: "Media", value: `${data.media}`, inline: true })
                 results.addFields({ name: `Seen`, value: `${data.seen} time(s)`, inline: true });
 
-                if (data.seen > 0) {
-                    results.addFields({ name: "Last Watched", value: `${data.updatedAt}`, inline: true })
-                }
+                // if (data.seen > 0) {
+                //     results.addFields({ name: "Last Watched", value: `${data.updatedAt}`, inline: true })
+                // }
             }
 
             return interaction.reply({ embeds: [results] });
