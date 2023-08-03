@@ -33,6 +33,12 @@ const addContent = {
         }
 
         try {
+            const checkContent = await Content(sequelize).findOne({
+                where: { name: getTitle }
+            })
+
+            if (checkContent) return interaction.reply(`${getTitle} has already been added.`)
+
             const content = await Content(sequelize).create({
                 name: getTitle,
                 media: getType
