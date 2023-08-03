@@ -91,11 +91,10 @@ const createEvent = {
         date.setHours(time[0])
         date.setMinutes(time[1])
         date.setSeconds("00")
-        date = date.toLocaleString('en-US', { timeZone: 'US/Arizona' })
 
         await event_manager.create({
             name: event_name,
-            scheduledStartTime: date,
+            scheduledStartTime: date.toLocaleString('en-US', { timeZone: 'US/Arizona' }),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.Voice,
             description: description,
