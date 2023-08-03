@@ -94,7 +94,7 @@ const createEvent = {
 
         await event_manager.create({
             name: event_name,
-            scheduledStartTime: date.toLocaleString('en-US', { timeZone: 'US/Arizona' }),
+            scheduledStartTime: new Date(date.toLocaleString('en-US', { timeZone: 'America/Arizona' })),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.Voice,
             description: description,

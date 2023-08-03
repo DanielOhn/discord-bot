@@ -38,7 +38,7 @@ const addDateEvent = {
 			watchDate.setHours(0);
 			watchDate.setMilliseconds(0);
 
-			const job = cron.scheduleJob(jobDate.toLocaleString('en-US', { timeZone: 'US/Arizona' }), async () => {
+			const job = cron.scheduleJob(new Date(jobDate.toLocaleString('en-US', { timeZone: 'America/Arizona' })), async () => {
 				let contentIds = [];
 
 				if (media.length === 2) {
@@ -62,7 +62,7 @@ const addDateEvent = {
 
 				//Create new Watch Dates for each media in the scheduled event
 				for (let i in contentIds) {
-					let newWatchdate = await Watch_Dates(sequelize).create({ content_id: contentIds[i], date: watchDate.toLocaleString('en-US', { timeZone: 'US/Arizona' }) })
+					let newWatchdate = await Watch_Dates(sequelize).create({ content_id: contentIds[i], date: new Date(watchDate.toLocaleString('en-US', { timeZone: 'America/Arizona' })) })
 				}
 
 			})
