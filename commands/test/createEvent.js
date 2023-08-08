@@ -92,7 +92,7 @@ const createEvent = {
         date.setMinutes(time[1])
         date.setSeconds("00")
 
-        date = new Date(date.toLocaleString('en-US', { timeZone: 'America/Arizona' }))
+        date = new Date(date.toLocaleString('en-US', { timeZone: 'US/Arizona' }))
         await event_manager.create({
             name: event_name,
             scheduledStartTime: date,

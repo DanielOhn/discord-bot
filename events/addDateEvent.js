@@ -33,14 +33,14 @@ const addDateEvent = {
 			jobDate.setHours(1)
 			jobDate.setMinutes(0)
 
-			jobDate = new Date(jobDate.toLocaleString('en-US', { timeZone: 'America/Arizona' }))
+			jobDate = new Date(jobDate.toLocaleString('en-US', { timeZone: 'US/Arizona' }))
 
 			watchDate.setSeconds(0);
 			watchDate.setMinutes(0);
 			watchDate.setHours(0);
 			watchDate.setMilliseconds(0);
 
-			watchDate = new Date(watchDate.toLocaleString('en-US', { timeZone: 'America/Arizona' }));
+			watchDate = new Date(watchDate.toLocaleString('en-US', { timeZone: 'US/Arizona' }));
 
 			const job = cron.scheduleJob(jobDate, async () => {
 				let contentIds = [];
