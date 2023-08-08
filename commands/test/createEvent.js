@@ -74,6 +74,7 @@ const createEvent = {
             ]
 
             time = "18:30"
+            date = new Date(date.toLocaleString('en-US', { timeZone: 'US/Arizona' }))
             description = `Tonight we'll be watching: \n${get_content[0]} \n${get_content[1]}`
         }
 
@@ -92,7 +93,6 @@ const createEvent = {
         date.setMinutes(time[1])
         date.setSeconds("00")
 
-        date = new Date(date.toLocaleString('en-US', { timeZone: 'US/Arizona' }))
         await event_manager.create({
             name: event_name,
             scheduledStartTime: date,
