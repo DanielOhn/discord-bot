@@ -75,6 +75,7 @@ const createEvent = {
 
             time = "18:30"
             date = new Date(date.toLocaleString('en-US', { timeZone: 'US/Arizona' }))
+            console.log(date)
             description = `Tonight we'll be watching: \n${get_content[0]} \n${get_content[1]}`
         }
 
@@ -92,6 +93,8 @@ const createEvent = {
         date.setHours(time[0])
         date.setMinutes(time[1])
         date.setSeconds("00")
+
+        console.log("TIME: ", date)
 
         await event_manager.create({
             name: event_name,
