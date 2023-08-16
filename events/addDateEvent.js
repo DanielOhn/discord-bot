@@ -16,12 +16,8 @@ const addDateEvent = {
 			let getContent = client.description
 			getContent = getContent.split("\n")
 			getContent.shift()
-
-			console.log(getContent)
-
+			
 			const watchDate = new Date(client.scheduledStartTimestamp);
-
-			console.log("WATCH DATE: ", watchDate)
 
 			// Sets the cron job date + time
 			let jobDate = new Date(watchDate.getDate() + 1)
@@ -32,8 +28,6 @@ const addDateEvent = {
 			watchDate.setMinutes(0)
 			watchDate.setHours(1)
 			watchDate.setMilliseconds(0)
-
-			console.log(jobDate)
 
 			const job = cron.scheduleJob(jobDate, async () => {
 				let contentIds = [];

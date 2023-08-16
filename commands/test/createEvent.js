@@ -94,8 +94,6 @@ const createEvent = {
         date.setMinutes(time[1])
         date.setSeconds("00")
 
-        console.log("TIME: ", date)
-
         await event_manager.create({
             name: event_name,
             scheduledStartTime: date,
